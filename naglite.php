@@ -14,26 +14,33 @@ ob_start();
 **     You should have received a copy of the GNU General Public License
 **     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
 
-<?php
 /*      This code is based on the nag-lite project found on http://nagiosexchange.org
 **
 **      this code is tested on nagios version 2 and 3
 **
 **      Bo Larsen, ha9bal@gmail.com
 */
-?>
 
-<?php
-	header("Pragma: no-cache");
-	header("Refresh: 90");
+header("Pragma: no-cache");
+header("Refresh: 90");
 ?>
-	<HTML>
-	<HEAD>
-	<TITLE>Nagios Status Lite</TITLE>
-	</HEAD>
-	<BODY BGCOLOR="#FFFFFF">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Nagios Status Lite</title>	
+    <!-- Framework CSS -->
+    <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print">
+
+    <!--[if lt IE 8]><link rel="stylesheet" href="./css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+
+    <!-- Import fancy-type plugin for the sample page. -->
+    <link rel="stylesheet" href="./css/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+  </head>
+  <body>
 
 	<CENTER> <H2>Nagios System Status</H2></CENTER>
 	<CENTER>
@@ -47,7 +54,7 @@ ob_start();
     	parse_status_array($status_lines);
 
 	echo "nagios version : " . $pstatus["version"]."<br /><br />";
-	
+
 	if(is_array($hlist)) 
 	foreach (array_keys($hlist) as $hkey) {
 		if( $hlist[$hkey]["host"]["status"] != "UP" && $hlist[$hkey]["host"]["status"] != "PENDING") {
@@ -77,12 +84,15 @@ ob_start();
 
 		$services=$hlist[$hkey]["service"];
 
+		$lastalert = "none";
+
 		if(is_array($services) && $hlist[$hkey]["host"]["status"] == "UP") {
+
 			foreach( $services as $service => $svalue) {
 				if($services[$service]["status"] == "WARNING") {
 					$servicesout_warning .= "<TR bgcolor=\"orange\">\n";
 
-					if($hlist[$hkey]["host"]["host_name"] == $lasthost && $lastalert == "WARNING")  {
+					if($hlist[$hkey]["host"]["host_name"] == $lasthost && $lastalert == "WARNING" || $lastalert == "CRITICAL")  {
 						$servicesout_warning .= sprintf("<TD bgcolor=\"white\">&nbsp;</TD>");
 					} else {
 						$servicesout_warning .= sprintf("<TD bgcolor=\"lightgrey\">%s</TD>", 
@@ -100,7 +110,7 @@ ob_start();
 					$lastalert="warning";
 				} else {
 					$servicesout_error .= "<TR bgcolor=\"pink\">\n";
-					if($hlist[$hkey]["host"]["host_name"] != $lasthost)  {
+					if($hlist[$hkey]["host"]["host_name"] != $lasthost && $hlist[$hkey] == "CRITICAL" || $lasterror != "WARNING")  {
 						$servicesout_error .= sprintf("<TD bgcolor=\"lightgrey\">%s</TD>", $hlist[$hkey]["host"]["host_name"]);
 					} else {
 						$servicesout_error .= sprintf("<TD bgcolor=\"white\">&nbsp;</TD>");
