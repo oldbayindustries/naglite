@@ -161,10 +161,15 @@ header("Refresh: 90");
 	if($services_pending) { echo "<FONT COLOR=\"grey\">$services_pending Pending</FONT> "; }
 	if($service_unknown) { echo "<FONT COLOR=\"yellow\">$services_unknown Unknown</FONT> "; }
         echo "\n</TH></TR>\n";
+  echo "</table>";
+	echo "<TABLE BORDER=0 celspacing=2 width=80%>\n";
+
 	if(strlen($servicesout_warning) || strlen($servicesout_error)) {
-		echo "<TR bgcolor=\"lightgrey\">\n";
+		echo "<thead>";
+		echo "<tr>\n";
 		echo "\t<TH>Host</TH><TH>Service</TH><TH>Status</TH><TH>Last Change</TH><TH>Duration</TH><TH>Status Information</TH>\n";
-		echo "</TR>\n";
+		echo "</tr>\n";
+		echo "</thead>\n";
 		echo $servicesout_error;
 		echo $servicesout_warning;
 		echo "</TABLE>\n";
@@ -202,6 +207,5 @@ header("Refresh: 90");
 ?>
 
 	</CENTER>
-	</BODY>
-	</HTML>
-
+  </body>
+</html>
