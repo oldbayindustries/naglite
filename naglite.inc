@@ -27,7 +27,7 @@
 
 
 <?php
-	$cgi_ini='/usr/local/nagios/etc/cgi.cfg';
+	$cgi_ini='/opt/local/etc/nagios/cgi.cfg';
 
 	$nagios_cfg = ini_getitem($cgi_ini, "main_config_file");
 
